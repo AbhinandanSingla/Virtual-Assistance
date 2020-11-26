@@ -23,6 +23,7 @@ import calendar
 import random
 import wikipedia
 import time
+import webbrowser
 
 # ignore any waning message
 warnings.filterwarnings('ignore')
@@ -42,14 +43,17 @@ def recordAudio():
         # use google speech recognition
         data = ""
         try:
-            print('jake is recognizing please wait ')
+            print('Jack is recognizing please wait ')
             data = r.recognize_google(audio)
             print("\nYou said " + data)
         except sr.UnknownValueError:
-            print('Google speech Recognition could not understand the audio , unknown error')
+            print('Google speech Recognition could not understand the audio')
 
         except sr.RequestError as e:
             print('Request result from google Speech Recognition service error ' + str(e))
+        # except sr.Microphone as e:
+        #     print(e)
+        time.sleep(1)
         return data
 
 
@@ -60,7 +64,7 @@ def get_headlines(news_country_code='ind'):
         else:
             headlines_url = "https://news.google.com/news?ned=%s&output=rss" % news_country_code
         feed = feedparser.parse(headlines_url)
-        if feed['feed'] =={}:
+        if feed['feed'] == {}:
             return "error no internet found"
         for post in feed.entries[0:5]:
             print(post['title'])
@@ -74,7 +78,7 @@ def get_headlines(news_country_code='ind'):
         return 'here is the result i have found'
     except Exception as e:
         traceback.print_exc()
-        return "Error : %s. Cannot get news." %e
+        return "Error : %s. Cannot get news." % e
 
 
 def totalTime_taken(hr, mins, sec):
@@ -101,7 +105,7 @@ def assistantResponse(text):
 
 # function for wake word or phase
 def wakeWord(text):
-    WAKE_WORDS = ['jake', 'Black Pearl']  # list of wake word
+    WAKE_WORDS = ['jack', 'Black Pearl']  # list of wake word
 
     text = text.lower()  # Converting the text in all lower case
     # print(text)
@@ -139,12 +143,12 @@ def greeting(text):
     # Greeting  inputs
     GREETING_INPUTS = ['hi', 'hello', 'ola', 'greeting', 'hey', 'wassup']
     # Greeting response
-    GREETING_RESPONSE = ['howdy', 'good to see you ', 'hey', 'hi', 'yo']
+    GREETING_RESPONSE = ['howdy', 'good to see you', 'hey', 'hi', 'yo']
 
     # if the user is a greeting then return a random greeting response
     for word in text.split():
         if word.lower() in GREETING_INPUTS:
-            return random.choice(GREETING_RESPONSE)
+            return random.choice(GREETING_RESPONSE) + ', '
     # if the is no greeting then we are returning empty string
     return ''
 
@@ -152,15 +156,22 @@ def greeting(text):
 # A function to get a first and last name from text
 
 def getPerson(text):
-    wordList = text.split()  # Splitting the text into a list of words
+    wordList = text.split()
+    print(wordList)# Splitting the text into a list of words
     for i in range(0, len(wordList)):
-        if i + 3 <= len(wordList) - 1 and wordList[i].lower() == 'who' and wordList[i + 1].lower() == 'is':
-            return wordList[i + 2] + ' ' + wordList[i + 3]  # need improvement
+        print(i)
+        if wordList[i].lower() == 'who' and wordList[i + 1].lower() == 'is':
+            print('aaa')
+            return ' '.join(wordList[i + 2:])
 
 
 def PersonINFO(text):
-    person = getPerson(text)
-    return wikipedia.summary(person, sentences=2)
+    try:
+        person = getPerson(text)
+        print(person)
+        return wikipedia.summary(person, sentences=2)
+    except Exception as e:
+        return 'no person found' + str(e)
 
 
 def getLocation():
@@ -177,13 +188,15 @@ def spliting_text(text):
 
 
 def Search(text):
-    text = text.split()
-    print(text[1])
-    for i in range(0, len(text)):
-        if text[i].lower() == 'search':
-            search = text[i + 1:]
+    txt = text.split()
+    for i in range(0, len(txt)):
+        # print(i)
+        if 'search' in txt[i].lower():
+            # print('enter')
+            search = txt[i + 1:]
             search = ''.join(map(spliting_text, search))
             search = search[: len(search) - 1]
+            print(search)
             try:
                 req = requests.get('https://www.bing.com/search?q=' + search)
                 bs = bs4.BeautifulSoup(req.content, 'html5lib')
@@ -194,7 +207,7 @@ def Search(text):
                         print(link.a['href'])
                         print(link.p.text + '\n\n')
                     except Exception as e:
-                        pass
+                        print('no result found')
             except Exception as e:
                 print(e)
 
@@ -224,10 +237,14 @@ def Talk(text):
     wordlist = text.split()
     response = ''
     r = ['I am fine', 'Awesome']
+    c = ['my lord Singla gave me birth', 'Sir singla is my creator']
     for i in range(0, len(wordlist)):
+        if 'who' == wordlist[i].lower() and 'created' == wordlist[i + 1].lower() and 'you' == wordlist[i + 2]:
+            # print(random.choice(c))
+            response += random.choice(c) + ' what about you. '
         if 'how' == wordlist[i].lower() and 'are' == wordlist[i + 1].lower() and 'you' == wordlist[i + 2]:
-            print(r[random.randint(0, 1)] + '. What about you. ')
-            response += r[random.randint(0, 1)] + ' what about you. '
+            # print(random.choice(r) + '. What about you. ')
+            response += random.choice(r) + ' what about you. '
     return response
 
 
@@ -235,37 +252,68 @@ def getReplied(text):
     wordlist = text.split()
     response = ''
     for i in range(0, len(wordlist)):
-        if 'i' == wordlist[i].lower() and 'am' == wordlist[i + 1].lower() and 'fine' == wordlist[i + 2]:
-            print('cool. ')
-            response += ' cool. '
+        if ('i' == wordlist[i].lower() and 'am' == wordlist[i + 1].lower() and 'fine' == wordlist[
+            i + 2]) or 'fine' in text.split():
+            # print('cool. ')
+            response += 'cool'
     return response
 
 
-print('Your virtual assistant Jake')
-# text = 'hey jake news'
-# print(text)
-text = recordAudio()
-response = ''
-if wakeWord(text):
-    print('jake is waked')
-    if greeting(text):
+def openBrower(text):
+    if 'instagram' in text.split():
+        webbrowser.open('www.instagram.com')
+    if 'facebook' in text.split():
+        webbrowser.open('www.facebook.com')
+    if 'twitter' in text.split():
+        webbrowser.open('www.twitter.com')
+    if 'github' in text.split():
+        webbrowser.open('www.github.com')
+
+
+print('Your virtual assistant Jack')
+
+
+def run():
+    text = recordAudio().lower()
+    response = ''
+    # print(text.split())
+    if 'break' in text.split():
+        exit()
+    response += getReplied(text)
+    if wakeWord(text):
+        # print('jake is waked')
         response += greeting(text)
-    if 'date' in text.split():
-        response += ' ' + getDate() + '.'
-    if 'who' in text.split():
-        response += ' ' + PersonINFO(text).replace('.', '\n')
+        response += Talk(text)
+
+        if 'date' in text.split():
+            response += ' ' + getDate() + '.'
+        if 'who' in text.split():
+            response += ' ' + PersonINFO(text).replace('.', '\n')
+            # print(response)
+        if 'weather' in text.split():
+            temp, summ = WeatherForecast()
+            print('Today weather is ' + summ + ' with ' + temp)
+        if 'news' in text.split():
+            response += get_headlines()
+            print(get_headlines())
+        elif 'headlines' in text.split():
+            response += get_headlines()
+            print(get_headlines())
+        if 'search' in text.split():
+            Search(text)
+        if 'open' in text.split():
+            openBrower(text)
+        if 'oya' in text.split():
+            response += 'fuck you dude'
+            # print(response)
         print(response)
-    if 'weather' in text.split():
-        temp, summ = WeatherForecast()
-        print('Today weather is ' + summ + ' with ' + temp)
-    if 'news' in text.split():
-        response += get_headlines()
-        print(get_headlines())
-    elif 'headlines' in text.split():
-        response += get_headlines()
-        print(get_headlines())
-    if 'oya' in text.split():
-        response += 'fuck you dude'
-        print(response)
-assistantResponse(response)
-# Search(text)
+    assistantResponse(response)
+
+
+# text = 'open facebook'
+
+while True:
+    run()
+    time.sleep(2)
+# a = PersonINFO('sdcsdvcdfv ffcsdsdv fsdvsv who is carry minati')
+# print(a)
