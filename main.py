@@ -29,8 +29,8 @@ import webbrowser
 warnings.filterwarnings('ignore')
 # A converter that will convert fahrenheit to Celsius
 convert_f_TO_C = lambda fahrenheit_temp: (fahrenheit_temp - 32) * 5 / 9
-
-
+weather_key = "Enter your Weather token"
+location_token = Enter your Location token
 # Record Audio and return Audio as string
 def recordAudio():
     # Record audio
@@ -176,7 +176,6 @@ def PersonINFO(text):
 
 def getLocation():
     ip = get_ip()
-    location_token = "2e5b75c9b4ebc576f08d9e2fb041592f"
     req = requests.get(f"http://api.ipstack.com/{ip}?access_key={location_token}")
     parserReq = json.loads(req.text)
     # return {'latitude':parserReq['latitude'],'longitude':parserReq['longitude']}
@@ -225,7 +224,7 @@ def get_ip():
 
 def WeatherForecast():
     lat, long = getLocation()
-    weather_key = "67bfd5376436887601019e6bab684a5d"
+
     weather_req = requests.get(f"https://api.darksky.net/forecast/{weather_key}/{lat},{long}")
     parser_weather = json.loads(weather_req.text)
     temperature = convert_f_TO_C(parser_weather['hourly']['data'][0]['temperature'])
