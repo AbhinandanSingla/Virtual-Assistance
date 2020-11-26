@@ -1,10 +1,5 @@
 # Virtual Assistant Jake
 #### This is your personal assistance in which you can get the following response 
-<style>
-ul{
-
-}
-</style>
 <ul>
 <li>Greeting
 <li>Get Date
