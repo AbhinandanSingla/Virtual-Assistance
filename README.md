@@ -3,7 +3,7 @@
 <a href="https://www.instagram.com/_.abhi_singla_/"><img alt="Instagram" src="https://img.shields.io/badge/join-instragram-ff69b4"></a>
 
 # Virtual Assistant Jake
-#### This is your personal assistance in which you can get the following response 
+#### This is your personal assistant in which you can get the following response 
 <ul>
 <li>Greeting
 <li>Get Date
@@ -22,7 +22,7 @@
 <li><a href = 'https://ipstack.com/' >location token click here</a></ul>
 
 ##### enter your token here in code
-<img alt = 'Loading image.. ' src='https://github.com/AbhinandanSingla/Virtual-Assistance/blob/main/image/tokens.png'>
+<img alt = 'Loading image.. ' src='https://github.com/AbhinandanSingla/Virtual-Assistant/blob/main/image/tokens.png'>
 
 #### Here are some pics of our assistance 
-<img alt = 'Loading image.. ' src='https://github.com/AbhinandanSingla/Virtual-Assistance/blob/main/image/greeting.png'>
+<img alt = 'Loading image.. ' src='https://github.com/AbhinandanSingla/Virtual-Assistant/blob/main/image/greeting.png'>
