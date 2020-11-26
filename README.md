@@ -18,7 +18,7 @@
 <li><a href = 'https://ipstack.com/' >location token click here</a></ul>
 
 ##### enter your token here in code
-<img alt = 'Loading image.. ' src='https://github.com/AbhinandanSingla/Virtual-Assistance/blob/main/image/tokens.png' height = '300'>
+<img alt = 'Loading image.. ' src='https://github.com/AbhinandanSingla/Virtual-Assistance/blob/main/image/tokens.png'>
 
 #### Here are some pics of our assistance 
-<img alt = 'Loading image.. ' src='https://github.com/AbhinandanSingla/Virtual-Assistance/blob/main/image/greeting.png' height = '300'>
+<img alt = 'Loading image.. ' src='https://github.com/AbhinandanSingla/Virtual-Assistance/blob/main/image/greeting.png'>
