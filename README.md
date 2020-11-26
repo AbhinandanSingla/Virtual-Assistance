@@ -24,5 +24,5 @@
 ##### enter your token here in code
 <img alt = 'Loading image.. ' src='https://github.com/AbhinandanSingla/Virtual-Assistant/blob/main/image/tokens.png'>
 
-#### Here are some pics of our assistance 
+#### Here are some pics of our assistant
 <img alt = 'Loading image.. ' src='https://github.com/AbhinandanSingla/Virtual-Assistant/blob/main/image/greeting.png'>
