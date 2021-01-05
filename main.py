@@ -58,6 +58,7 @@ def recordAudio():
 
 
 def get_headlines(news_country_code='ind'):
+    print('enter in new section')
     try:
         if news_country_code is None:
             headlines_url = "https://news.google.com/news?ned=us&output=rss"
@@ -69,11 +70,12 @@ def get_headlines(news_country_code='ind'):
         for post in feed.entries[0:5]:
             print(post['title'])
             print(post['link'])
+            assistantResponse(post['title'])
             tim = post['published_parsed']
             hr, mins, sec = tim[3], tim[4], tim[5]
             hr, mins, sec = totalTime_taken(hr, mins, sec)
             print(time.strftime('%a, %d %b %Y', tim))
-            print(time.strftime('%H:%M:%S', tim) + '\n')
+            print(time.strftime('%H:%M:%S', tim))
             print('old time ' + str(hr) + ':' + str(mins))
         return 'here is the result i have found'
     except Exception as e:
@@ -157,7 +159,7 @@ def greeting(text):
 
 def getPerson(text):
     wordList = text.split()
-    print(wordList)# Splitting the text into a list of words
+    print(wordList)  # Splitting the text into a list of words
     for i in range(0, len(wordList)):
         print(i)
         if wordList[i].lower() == 'who' and wordList[i + 1].lower() == 'is':
@@ -178,8 +180,7 @@ def getLocation():
     ip = get_ip()
     req = requests.get(f"http://api.ipstack.com/{ip}?access_key={location_token}")
     parserReq = json.loads(req.text)
-    # return {'latitude':parserReq['latitude'],'longitude':parserReq['longitude']}
-    return parserReq['latitude'], parserReq['longitude']
+    return parserReq['latitude'], parserReq['longitude'], parserReq['city']
 
 
 def spliting_text(text):
@@ -223,13 +224,13 @@ def get_ip():
 
 
 def WeatherForecast():
-    lat, long = getLocation()
+    lat, long, city = getLocation()
 
     weather_req = requests.get(f"https://api.darksky.net/forecast/{weather_key}/{lat},{long}")
     parser_weather = json.loads(weather_req.text)
     temperature = convert_f_TO_C(parser_weather['hourly']['data'][0]['temperature'])
     summary = parser_weather['hourly']['summary']
-    return temperature, summary
+    return temperature, summary, city
 
 
 def Talk(text):
@@ -290,12 +291,14 @@ def run():
             response += ' ' + PersonINFO(text).replace('.', '\n')
             # print(response)
         if 'weather' in text.split():
-            temp, summ = WeatherForecast()
-            print('Today weather is ' + summ + ' with ' + temp)
+            temp, summ, city = WeatherForecast()
+            print(f'In {str(city)} Today weather is {str(summ)}  with  {str(temp)}')
+            response += f'In {str(city)} Today weather is {str(summ)}  with  {str(temp)}'
+
         if 'news' in text.split():
             response += get_headlines()
             print(get_headlines())
-        elif 'headlines' in text.split():
+        elif 'headlines' or 'headline' in text.split():
             response += get_headlines()
             print(get_headlines())
         if 'search' in text.split():
@@ -307,12 +310,8 @@ def run():
             # print(response)
         print(response)
     assistantResponse(response)
-
-
-# text = 'open facebook'
-
-while True:
     run()
-    time.sleep(2)
-# a = PersonINFO('sdcsdvcdfv ffcsdsdv fsdvsv who is carry minati')
-# print(a)
+
+
+if __name__ == '__main__':
+    run()
